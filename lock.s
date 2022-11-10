@@ -126,6 +126,3 @@ ts_unlock:
 	movl	$0, (%eax)
 	ret
 
-.global fetch_add
-fetch_add:
-	movl	4(%esp), %eax		/* get the address of the lock */
