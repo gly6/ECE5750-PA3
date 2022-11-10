@@ -103,3 +103,29 @@ s_unlock:
 	movl	$0, (%eax)
 	ret
 
+		.globl ts_lock_init
+ts_lock_init:	
+	movl	4(%esp), %eax		/* get the address of the lock */
+	movl	$0, (%eax)          /* set to 0 */
+	ret
+
+.globl ts_lock
+ts_lock:	
+	movl	4(%esp), %eax		/* get the address of the lock */
+	movl	$1, %ecx
+setlock:
+	xchgl	%ecx, (%eax)
+	testl	%ecx, %ecx
+	jnz	    setlock			/* it was clear, return */
+	ret
+
+
+.globl ts_unlock
+ts_unlock:	
+	movl	4(%esp), %eax		/* get the address of the lock */
+	movl	$0, (%eax)
+	ret
+
+.global fetch_add
+fetch_add:
+	movl	4(%esp), %eax		/* get the address of the lock */
